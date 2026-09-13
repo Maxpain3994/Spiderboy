@@ -721,6 +721,12 @@
             }
 
             const position = getCanvasPosition(e);
+            const onBuilding = buildings.some((building) => building.contains(position.x, position.y));
+            if (!onBuilding) {
+                player.endSwing();
+                return;
+            }
+
             player.swingAnchorX = position.x;
             player.swingAnchorY = position.y;
         });
@@ -757,34 +763,16 @@
             const playerBounds = playerObject.getBounds();
 
             for (const building of buildings) {
-                const buildingBounds = {
-                    x: building.x,
-                    y: building.y,
-                    width: building.width,
-                    height: building.height
-                };
+                const crossedRoof = previousBounds.y + previousBounds.height <= building.y &&
+                    playerBounds.y + playerBounds.height >= building.y;
+                const overlapsRoof = playerBounds.x + playerBounds.width > building.x &&
+                    playerBounds.x < building.x + building.width;
 
-                if (!checkCollision(playerBounds, buildingBounds)) {
-                    continue;
-                }
-
-                if (previousBounds.y + previousBounds.height <= building.y) {
+                if (crossedRoof && overlapsRoof && playerObject.vy >= 0) {
                     playerObject.y = building.y - playerObject.height;
                     playerObject.vy = 0;
                     playerObject.isGrounded = true;
-                } else if (previousBounds.y >= building.y + building.height) {
-                    playerObject.y = building.y + building.height;
-                    playerObject.vy = 0;
-                } else if (previousBounds.x + previousBounds.width <= building.x) {
-                    playerObject.x = building.x - playerObject.width / 2;
-                    playerObject.vx = 0;
-                } else if (previousBounds.x >= building.x + building.width) {
-                    playerObject.x = building.x + building.width + playerObject.width / 2;
-                    playerObject.vx = 0;
                 }
-
-                playerBounds.x = playerObject.x - playerObject.width / 2;
-                playerBounds.y = playerObject.y;
             }
         }
 
@@ -972,6 +960,10 @@
 
         // Start game
         gameLoop();
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
