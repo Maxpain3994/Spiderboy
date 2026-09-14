@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spider-Man Web Slinger</title>
+    <title>Fan Made Spider-Man Web Slinger</title>
     <style>
         * {
             margin: 0;
@@ -73,6 +73,36 @@
             background: linear-gradient(90deg, #ff0000, #ff6600);
             width: 100%;
             transition: width 0.2s;
+        }
+
+        .boss-display {
+            display: none;
+            position: fixed;
+            top: 112px;
+            left: 10px;
+            width: 250px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #ffdf2b;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .boss-display.active {
+            display: block;
+        }
+
+        .boss-bar {
+            height: 12px;
+            margin-top: 5px;
+            background: #3b0b0b;
+            border: 1px solid white;
+        }
+
+        .boss-fill {
+            height: 100%;
+            width: 100%;
+            background: #e32636;
         }
 
         .instructions {
@@ -146,6 +176,245 @@
             font-weight: bold;
             z-index: 100;
         }
+
+        .quit-button {
+            position: fixed;
+            display: none;
+            top: 112px;
+            right: 10px;
+            padding: 8px 14px;
+            background: #333;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .quit-button:hover {
+            background: #aa0000;
+        }
+
+        .music-button {
+            position: fixed;
+            display: none;
+            top: 152px;
+            right: 10px;
+            padding: 8px 14px;
+            background: #333;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .music-button:hover {
+            background: #245b86;
+        }
+
+        .pause-button {
+            position: fixed;
+            display: none;
+            top: 72px;
+            right: 10px;
+            padding: 8px 14px;
+            background: #333;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .pause-button:hover {
+            background: #245b86;
+        }
+
+        .pause-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.45);
+            color: white;
+            font-size: 52px;
+            font-weight: bold;
+            text-shadow: 0 3px 12px #000;
+            z-index: 150;
+        }
+
+        .pause-overlay.show {
+            display: flex;
+        }
+
+        .command-panel {
+            display: none;
+            position: fixed;
+            top: 230px;
+            right: 10px;
+            width: 230px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ffdf2b;
+            border-radius: 8px;
+            color: white;
+            z-index: 180;
+        }
+
+        .command-panel.show {
+            display: block;
+        }
+
+        .command-button {
+            position: fixed;
+            display: none;
+            top: 192px;
+            right: 10px;
+            padding: 8px 14px;
+            background: #333;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .command-button:hover {
+            background: #245b86;
+        }
+
+        .command-panel label {
+            display: block;
+            margin-bottom: 7px;
+            color: #ffdf2b;
+            font-weight: bold;
+        }
+
+        .command-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .command-input {
+            min-width: 0;
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #71809b;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .command-submit {
+            padding: 8px 10px;
+            border: 0;
+            border-radius: 4px;
+            background: #e32636;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .command-submit:hover {
+            background: #ff4a55;
+        }
+
+        .command-status {
+            min-height: 18px;
+            margin-top: 7px;
+            color: #c9d5e8;
+            font-size: 12px;
+        }
+
+        .main-menu {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(7, 12, 24, 0.92);
+            z-index: 300;
+            color: white;
+        }
+
+        .menu-panel {
+            width: min(430px, calc(100% - 32px));
+            padding: 30px;
+            background: #17243a;
+            border: 3px solid #e32636;
+            border-radius: 12px;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .menu-panel h1 {
+            margin-bottom: 8px;
+            color: #ffdf2b;
+            font-size: 34px;
+        }
+
+        .menu-panel p {
+            margin-bottom: 24px;
+            color: #c9d5e8;
+        }
+
+        .menu-label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+
+        .menu-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #71809b;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .swatch-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 42px;
+            height: 42px;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .color-swatch.selected {
+            border-color: white;
+            box-shadow: 0 0 0 3px #ffdf2b;
+        }
+
+        .start-button {
+            width: 100%;
+            margin-top: 28px;
+            padding: 13px;
+            border: 0;
+            border-radius: 7px;
+            background: #e32636;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .start-button:hover {
+            background: #ff4a55;
+        }
     </style>
 </head>
 <body>
@@ -168,14 +437,67 @@
             <span>Criminals Caught:</span>
             <span id="criminalsCaught">0</span>
         </div>
+        <div class="stat-line">
+            <span>Bananas:</span>
+            <span id="bananasCollected">0</span>
+        </div>
     </div>
 
     <div class="score-display">
+        Hero: <span id="playerNameDisplay">Spider-Man</span><br>
         Score: <span id="score">0</span>
     </div>
 
+    <div class="boss-display" id="bossDisplay">
+        BOSS: <span id="bossName">Unknown</span>
+        <div class="boss-bar"><div class="boss-fill" id="bossHealthBar"></div></div>
+    </div>
+
+    <button class="quit-button" id="quitButton" type="button">Quit Game</button>
+    <button class="pause-button" id="pauseButton" type="button">Pause</button>
+    <button class="music-button" id="musicButton" type="button">Music: On</button>
+    <button class="command-button" id="commandButton" type="button">Commands (T)</button>
+    <div class="pause-overlay" id="pauseOverlay">PAUSED</div>
+    <div class="command-panel" id="commandPanel">
+        <label for="villainInput">Spawn Villain</label>
+        <div class="command-row">
+            <input class="command-input" id="villainInput" type="text" placeholder="Doc Ock" autocomplete="off">
+            <button class="command-submit" id="spawnVillainButton" type="button">Spawn</button>
+        </div>
+        <div class="command-status" id="commandStatus">T toggles this panel</div>
+    </div>
+
+    <div class="main-menu" id="mainMenu">
+        <div class="menu-panel">
+            <h1>Fan Made Spider-Man</h1>
+            <p>Build your hero and patrol the city.</p>
+
+            <label class="menu-label" for="playerNameInput">Hero Name</label>
+            <input class="menu-input" id="playerNameInput" maxlength="24" value="Spider-Man" type="text">
+
+            <span class="menu-label">Suit Color</span>
+            <div class="swatch-row" id="suitColors">
+                <button class="color-swatch selected" data-color-type="suit" data-color="#cc0000" style="background:#cc0000" aria-label="Red suit"></button>
+                <button class="color-swatch" data-color-type="suit" data-color="#171717" style="background:#171717" aria-label="Black suit"></button>
+                <button class="color-swatch" data-color-type="suit" data-color="#f2f2f2" style="background:#f2f2f2" aria-label="White suit"></button>
+                <button class="color-swatch" data-color-type="suit" data-color="#d59b16" style="background:#d59b16" aria-label="Gold suit"></button>
+            </div>
+
+            <span class="menu-label">Accent Color</span>
+            <div class="swatch-row" id="accentColors">
+                <button class="color-swatch selected" data-color-type="accent" data-color="#0033cc" style="background:#0033cc" aria-label="Blue accents"></button>
+                <button class="color-swatch" data-color-type="accent" data-color="#6b22b8" style="background:#6b22b8" aria-label="Purple accents"></button>
+                <button class="color-swatch" data-color-type="accent" data-color="#168447" style="background:#168447" aria-label="Green accents"></button>
+                <button class="color-swatch" data-color-type="accent" data-color="#222222" style="background:#222222" aria-label="Black accents"></button>
+                <button class="color-swatch" data-color-type="accent" data-color="#e32636" style="background:#e32636" aria-label="Red accents"></button>
+            </div>
+
+            <button class="start-button" id="startGameButton" type="button">Start Game</button>
+        </div>
+    </div>
+
     <div class="instructions">
-        ← → Arrow Keys to Move | SPACE to Shoot Web | Hold Left Click on a Building to Swing | Hold E for Spider-Sense | Catch Criminals • Avoid Enemy Fire
+        W Jump | A D Move | SPACE to Shoot Web | Hold Left Click on a Building to Swing | Hold E for Slow-Motion Spider-Sense | Catch Criminals • Avoid Enemy Fire
     </div>
 
     <div class="game-over" id="gameOver">
@@ -189,6 +511,132 @@
         const ctx = canvas.getContext('2d');
         canvas.width = 1200;
         canvas.height = 700;
+        const worldWidth = 3600;
+        let cameraX = 0;
+
+        class GameMusic {
+            constructor() {
+                this.audioContext = null;
+                this.timer = null;
+                this.noteIndex = 0;
+                this.enabled = true;
+                this.notes = [146.83, 174.61, 220, 261.63, 220, 174.61, 196, 220];
+            }
+
+            start() {
+                if (!this.enabled) {
+                    return;
+                }
+
+                if (!this.audioContext) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContextClass) {
+                        this.enabled = false;
+                        return;
+                    }
+                    this.audioContext = new AudioContextClass();
+                }
+
+                this.audioContext.resume();
+                if (!this.timer) {
+                    this.playNote();
+                    this.timer = setInterval(() => this.playNote(), 200);
+                }
+            }
+
+            playNote() {
+                if (!this.audioContext || this.audioContext.state !== 'running') {
+                    return;
+                }
+
+                const now = this.audioContext.currentTime;
+                const lead = this.audioContext.createOscillator();
+                const leadGain = this.audioContext.createGain();
+                lead.type = 'sawtooth';
+                lead.frequency.value = this.notes[this.noteIndex];
+                leadGain.gain.setValueAtTime(0.0001, now);
+                leadGain.gain.exponentialRampToValueAtTime(0.025, now + 0.015);
+                leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+                lead.connect(leadGain);
+                leadGain.connect(this.audioContext.destination);
+                lead.start(now);
+                lead.stop(now + 0.17);
+
+                this.playTone(73.42, 'square', 0.11, 0.04, now);
+                if (this.noteIndex % 2 === 0) {
+                    this.playKick(now);
+                } else {
+                    this.playSnare(now);
+                }
+                this.noteIndex = (this.noteIndex + 1) % this.notes.length;
+            }
+
+            playTone(frequency, type, duration, volume, startTime) {
+                const oscillator = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                oscillator.type = type;
+                oscillator.frequency.value = frequency;
+                gain.gain.setValueAtTime(volume, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+                oscillator.connect(gain);
+                gain.connect(this.audioContext.destination);
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            }
+
+            playKick(startTime) {
+                const oscillator = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(130, startTime);
+                oscillator.frequency.exponentialRampToValueAtTime(45, startTime + 0.14);
+                gain.gain.setValueAtTime(0.16, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.14);
+                oscillator.connect(gain);
+                gain.connect(this.audioContext.destination);
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.15);
+            }
+
+            playSnare(startTime) {
+                const buffer = this.audioContext.createBuffer(1, this.audioContext.sampleRate * 0.08, this.audioContext.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let index = 0; index < data.length; index++) {
+                    data[index] = (Math.random() * 2 - 1) * (1 - index / data.length);
+                }
+                const source = this.audioContext.createBufferSource();
+                const gain = this.audioContext.createGain();
+                source.buffer = buffer;
+                gain.gain.value = 0.07;
+                source.connect(gain);
+                gain.connect(this.audioContext.destination);
+                source.start(startTime);
+            }
+
+            toggle() {
+                this.enabled = !this.enabled;
+                if (this.enabled) {
+                    this.start();
+                } else if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                    this.audioContext.suspend();
+                }
+                return this.enabled;
+            }
+
+            stop() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+                if (this.audioContext) {
+                    this.audioContext.suspend();
+                }
+            }
+        }
+
+        const gameMusic = new GameMusic();
 
         // Game States
         const gameState = {
@@ -198,7 +646,10 @@
             maxWebEnergy: 100,
             score: 0,
             criminalsCaught: 0,
+            bananasCollected: 0,
             gameOver: false,
+            paused: false,
+            started: false,
             level: 1
         };
 
@@ -214,20 +665,24 @@
                 this.isSwinging = false;
                 this.swingAnchorX = null;
                 this.swingAnchorY = null;
+                this.swingBuilding = null;
                 this.swingDistance = 0;
                 this.swingAngle = 0;
                 this.swingRopeLength = 0;
                 this.webShootCooldown = 0;
                 this.isGrounded = false;
                 this.facing = 1; // 1 for right, -1 for left
+                this.name = 'Spider-Man';
+                this.suitColor = '#cc0000';
+                this.accentColor = '#0033cc';
             }
 
             update(keys) {
                 // Horizontal movement
-                if (keys['ArrowLeft']) {
+                if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
                     this.vx = -8;
                     this.facing = -1;
-                } else if (keys['ArrowRight']) {
+                } else if (keys['ArrowRight'] || keys['d'] || keys['D']) {
                     this.vx = 8;
                     this.facing = 1;
                 } else {
@@ -254,16 +709,22 @@
                     }
                 }
 
-                // Boundary checks - DIE if fall off map
-                if (this.y > canvas.height + 100) {
-                    gameState.gameOver = true;
-                    gameState.health = 0;
+                // The ground catches the player even when a swing reaches the bottom.
+                if (this.y >= canvas.height - 50) {
+                    this.y = canvas.height - 50;
+                    this.vy = 0;
+                    this.isGrounded = true;
+                    if (this.isSwinging) {
+                        this.endSwing();
+                    }
                 }
 
-                if (this.x < -50) {
-                    this.x = canvas.width + 50;
-                } else if (this.x > canvas.width + 50) {
-                    this.x = -50;
+                if (this.x < 15) {
+                    this.x = 15;
+                    this.vx = 0;
+                } else if (this.x > worldWidth - 15) {
+                    this.x = worldWidth - 15;
+                    this.vx = 0;
                 }
 
                 // Cooldowns
@@ -286,6 +747,13 @@
                 };
             }
 
+            jump() {
+                if (this.isGrounded && !this.isSwinging) {
+                    this.vy = -13;
+                    this.isGrounded = false;
+                }
+            }
+
             updateSwing() {
                 const dx = this.x - this.swingAnchorX;
                 const dy = this.y - this.swingAnchorY;
@@ -293,8 +761,8 @@
 
                 if (this.swingDistance > 0) {
                     // Gravity and a steady pull toward the held pointer create the swing.
-                    this.vx += (this.swingAnchorX - this.x) / this.swingDistance * 0.7;
-                    this.vy += (this.swingAnchorY - this.y) / this.swingDistance * 0.7;
+                    this.vx += (this.swingAnchorX - this.x) / this.swingDistance * 1.2;
+                    this.vy += (this.swingAnchorY - this.y) / this.swingDistance * 1.2;
                 }
 
                 this.vy += 0.25;
@@ -320,18 +788,19 @@
                     }
                 }
 
-                resolveBuildingCollisions(this);
             }
 
-            startSwing(anchorX, anchorY) {
+            startSwing(anchorX, anchorY, building) {
                 this.swingAnchorX = anchorX;
                 this.swingAnchorY = anchorY;
+                this.swingBuilding = building;
                 this.swingRopeLength = Math.max(80, getDistance(this.x, this.y, anchorX, anchorY));
                 this.isSwinging = true;
             }
 
             endSwing() {
                 this.isSwinging = false;
+                this.swingBuilding = null;
             }
 
             shoot(targetX, targetY) {
@@ -349,29 +818,87 @@
             }
 
             draw() {
-                // Head
-                ctx.fillStyle = '#ff6644';
+                const headY = this.y;
+                const webColor = 'rgba(12, 12, 28, 0.8)';
+
+                // Mask
+                ctx.fillStyle = this.suitColor;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+                ctx.arc(this.x, headY, 12, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Eyes
-                ctx.fillStyle = 'white';
+                // Mask web pattern
+                ctx.strokeStyle = webColor;
+                ctx.lineWidth = 0.8;
+                for (let radius = 4; radius <= 12; radius += 4) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, headY, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+                for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 4) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, headY);
+                    ctx.lineTo(this.x + Math.cos(angle) * 12, headY + Math.sin(angle) * 12);
+                    ctx.stroke();
+                }
+
+                // Expressive eye lenses
+                ctx.fillStyle = '#f5fbff';
                 ctx.beginPath();
-                ctx.arc(this.x - 5, this.y - 2, 3, 0, Math.PI * 2);
+                ctx.moveTo(this.x - 10, headY - 5);
+                ctx.lineTo(this.x - 3, headY - 8);
+                ctx.lineTo(this.x - 5, headY + 1);
+                ctx.lineTo(this.x - 11, headY + 3);
+                ctx.closePath();
                 ctx.fill();
                 ctx.beginPath();
-                ctx.arc(this.x + 5, this.y - 2, 3, 0, Math.PI * 2);
+                ctx.moveTo(this.x + 10, headY - 5);
+                ctx.lineTo(this.x + 3, headY - 8);
+                ctx.lineTo(this.x + 5, headY + 1);
+                ctx.lineTo(this.x + 11, headY + 3);
+                ctx.closePath();
                 ctx.fill();
 
-                // Body
-                ctx.fillStyle = '#cc0000';
+                // Red-and-blue suit silhouette
+                ctx.fillStyle = this.suitColor;
+                ctx.fillRect(this.x - 13, this.y + 12, 26, 8);
                 ctx.fillRect(this.x - 10, this.y + 10, 20, 20);
 
-                // Legs
-                ctx.fillStyle = '#0033cc';
+                // Blue shoulders and boots
+                ctx.fillStyle = this.accentColor;
+                ctx.fillRect(this.x - 13, this.y + 12, 5, 12);
+                ctx.fillRect(this.x + 8, this.y + 12, 5, 12);
                 ctx.fillRect(this.x - 8, this.y + 30, 8, 15);
                 ctx.fillRect(this.x, this.y + 30, 8, 15);
+
+                // Chest webbing and spider emblem
+                const emblemColor = this.suitColor.toLowerCase() === '#171717' ? this.accentColor : '#11111c';
+                ctx.strokeStyle = webColor;
+                ctx.lineWidth = 0.8;
+                for (let offset = -8; offset <= 8; offset += 4) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y + 11);
+                    ctx.lineTo(this.x + offset, this.y + 28);
+                    ctx.stroke();
+                }
+                ctx.fillStyle = emblemColor;
+                ctx.beginPath();
+                ctx.ellipse(this.x, this.y + 20, 2.5, 6, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y + 14, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = emblemColor;
+                ctx.lineWidth = 1.5;
+                for (let side = -1; side <= 1; side += 2) {
+                    for (let leg = 0; leg < 3; leg++) {
+                        const startY = this.y + 17 + leg * 4;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x + side * 2, startY);
+                        ctx.lineTo(this.x + side * (8 + leg), startY - 3 + leg * 3);
+                        ctx.stroke();
+                    }
+                }
 
                 // Draw swing web if swinging
                 if (this.isSwinging) {
@@ -406,11 +933,17 @@
 
                 // Windows
                 ctx.fillStyle = '#ffff99';
-                for (let i = 0; i < this.width / 30; i++) {
-                    for (let j = 0; j < this.height / 30; j++) {
+                const windowColumns = Math.max(1, Math.floor((this.width - 20) / 30));
+                const windowRows = Math.max(1, Math.floor((this.height - 20) / 30));
+                const windowGridWidth = windowColumns * 30 - 15;
+                const windowGridHeight = windowRows * 30 - 15;
+                const windowStartX = this.x + (this.width - windowGridWidth) / 2;
+                const windowStartY = this.y + (this.height - windowGridHeight) / 2;
+                for (let i = 0; i < windowColumns; i++) {
+                    for (let j = 0; j < windowRows; j++) {
                         ctx.fillRect(
-                            this.x + 5 + i * 30,
-                            this.y + 5 + j * 30,
+                            windowStartX + i * 30,
+                            windowStartY + j * 30,
                             15,
                             15
                         );
@@ -421,6 +954,41 @@
                 ctx.strokeStyle = '#333333';
                 ctx.lineWidth = 2;
                 ctx.strokeRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        class Banana {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.width = 24;
+                this.height = 30;
+                this.rotation = (Math.random() - 0.5) * 0.3;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+
+                ctx.strokeStyle = '#8a5a00';
+                ctx.lineWidth = 5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(-7, -9);
+                ctx.quadraticCurveTo(2, 12, 10, -2);
+                ctx.stroke();
+
+                ctx.strokeStyle = '#ffd21f';
+                ctx.lineWidth = 7;
+                ctx.beginPath();
+                ctx.moveTo(-6, -8);
+                ctx.quadraticCurveTo(3, 10, 9, -2);
+                ctx.stroke();
+
+                ctx.fillStyle = '#6d4700';
+                ctx.fillRect(-9, -12, 6, 4);
+                ctx.restore();
             }
         }
 
@@ -437,10 +1005,10 @@
                 this.radius = 5;
             }
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.lifetime--;
+            update(timeScale) {
+                this.x += this.vx * timeScale;
+                this.y += this.vy * timeScale;
+                this.lifetime -= timeScale;
             }
 
             draw() {
@@ -462,6 +1030,198 @@
             }
         }
 
+        class Boss {
+            constructor(type, x, y) {
+                this.type = type;
+                this.x = x;
+                this.y = y;
+                this.width = 70;
+                this.height = 80;
+                this.vx = 0;
+                this.health = 300;
+                this.maxHealth = 300;
+                this.attackCooldown = 60;
+                this.phase = 0;
+            }
+
+            update(timeScale) {
+                const direction = Math.sign(player.x - this.x);
+                this.vx += direction * 0.08 * timeScale;
+                this.vx *= 0.96;
+                this.x += this.vx * timeScale;
+                this.x = Math.max(40, Math.min(worldWidth - 40, this.x));
+                this.phase += 0.08 * timeScale;
+                this.attackCooldown -= timeScale;
+
+                if (this.attackCooldown <= 0) {
+                    this.attackCooldown = this.type === 'Green Goblin' ? 45 : 75;
+                    enemyBullets.push(new EnemyBullet(this.x, this.y, player.x, player.y));
+                    if (this.type === 'Doc Ock') {
+                        enemyBullets.push(new EnemyBullet(this.x - 28, this.y + 25, player.x, player.y));
+                        enemyBullets.push(new EnemyBullet(this.x + 28, this.y + 25, player.x, player.y));
+                    }
+                }
+            }
+
+            takeDamage(amount) {
+                this.health -= amount;
+            }
+
+            draw() {
+                const bob = Math.sin(this.phase) * 3;
+                const drawY = this.y + bob;
+                let bodyColor = '#b58b52';
+                let accentColor = '#6f4e2e';
+
+                if (this.type === 'Green Goblin') {
+                    bodyColor = '#3c9b54';
+                    accentColor = '#b7d34b';
+                } else if (this.type === 'Doc Ock') {
+                    bodyColor = '#d8dce5';
+                    accentColor = '#8b5a2b';
+                }
+
+                ctx.fillStyle = bodyColor;
+                ctx.beginPath();
+                ctx.arc(this.x, drawY + 25, 28, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = accentColor;
+                ctx.fillRect(this.x - 25, drawY + 42, 50, 30);
+
+                ctx.fillStyle = '#e8b184';
+                ctx.beginPath();
+                ctx.arc(this.x, drawY, 20, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#171b26';
+                ctx.fillRect(this.x - 21, drawY - 3, 42, 7);
+
+                ctx.fillStyle = '#ffef77';
+                ctx.fillRect(this.x - 13, drawY - 1, 8, 4);
+                ctx.fillRect(this.x + 5, drawY - 1, 8, 4);
+
+                if (this.type === 'Doc Ock') {
+                    ctx.strokeStyle = '#5c6675';
+                    ctx.lineWidth = 5;
+                    for (let side = -1; side <= 1; side += 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(this.x + side * 20, drawY + 38);
+                        ctx.lineTo(this.x + side * 48, drawY + 20);
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(this.x + side * 20, drawY + 48);
+                        ctx.lineTo(this.x + side * 48, drawY + 65);
+                        ctx.stroke();
+                    }
+                } else if (this.type === 'Green Goblin') {
+                    ctx.fillStyle = '#6d279c';
+                    ctx.fillRect(this.x - 30, drawY + 70, 60, 8);
+                }
+            }
+
+            getBounds() {
+                return { x: this.x - this.width / 2, y: this.y, width: this.width, height: this.height };
+            }
+        }
+
+        class Train {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.speed = 3.2;
+                this.stopped = false;
+                this.carWidth = 220;
+                this.carHeight = 105;
+                this.carCount = 4;
+            }
+
+            getLeft() {
+                return this.x - this.carWidth * this.carCount;
+            }
+
+            getFrontX() {
+                return this.getLeft() + 28;
+            }
+
+            update(timeScale) {
+                if (!this.stopped) {
+                    this.x -= this.speed * timeScale;
+                }
+            }
+
+            draw() {
+                const carWidth = this.carWidth;
+                const carHeight = this.carHeight;
+                const carCount = this.carCount;
+                const trainLeft = this.getLeft();
+
+                ctx.fillStyle = '#17232d';
+                ctx.fillRect(trainLeft, this.y, carWidth * carCount, carHeight);
+                ctx.fillStyle = '#d9e4e8';
+                for (let car = 0; car < carCount; car++) {
+                    const carX = trainLeft + car * carWidth;
+                    ctx.fillRect(carX + 16, this.y + 18, carWidth - 32, 42);
+                    ctx.fillStyle = '#5fd1e8';
+                    ctx.fillRect(carX + 32, this.y + 25, 48, 25);
+                    ctx.fillRect(carX + 98, this.y + 25, 48, 25);
+                    ctx.fillStyle = '#d9e4e8';
+                }
+
+                ctx.fillStyle = '#e32636';
+                ctx.fillRect(trainLeft, this.y + 70, carWidth * carCount, 12);
+                ctx.fillStyle = '#171b26';
+                for (let car = 0; car <= carCount; car++) {
+                    ctx.beginPath();
+                    ctx.arc(trainLeft + car * carWidth - (car === carCount ? 0 : 24), this.y + carHeight, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.fillStyle = '#555';
+                ctx.fillRect(trainLeft - 45, this.y + carHeight + 18, carWidth * carCount + 70, 7);
+                ctx.fillStyle = '#ffdf2b';
+                ctx.fillRect(trainLeft - 8, this.y + 25, 8, 22);
+            }
+
+            drawWebs(anchorX, anchorY) {
+                const nearbyBuildings = buildings
+                    .filter((building) => Math.abs(building.x - anchorX) < 900)
+                    .sort((first, second) => Math.abs(first.x - anchorX) - Math.abs(second.x - anchorX))
+                    .slice(0, 3);
+
+                ctx.save();
+                ctx.strokeStyle = 'rgba(245, 250, 255, 0.95)';
+                ctx.lineWidth = 3;
+                nearbyBuildings.forEach((building, index) => {
+                    const targetX = building.x + building.width / 2;
+                    const targetY = building.y + 8;
+                    const sag = 35 + index * 12;
+                    ctx.beginPath();
+                    ctx.moveTo(anchorX, anchorY);
+                    ctx.quadraticCurveTo(
+                        (anchorX + targetX) / 2,
+                        Math.max(anchorY, targetY) + sag,
+                        targetX,
+                        targetY
+                    );
+                    ctx.stroke();
+
+                    ctx.strokeStyle = 'rgba(180, 220, 240, 0.65)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(anchorX + 4, anchorY + 2);
+                    ctx.quadraticCurveTo(
+                        (anchorX + targetX) / 2 + 10,
+                        Math.max(anchorY, targetY) + sag + 7,
+                        targetX + 4,
+                        targetY
+                    );
+                    ctx.stroke();
+                    ctx.strokeStyle = 'rgba(245, 250, 255, 0.95)';
+                    ctx.lineWidth = 3;
+                });
+                ctx.restore();
+            }
+        }
+
         // Criminal Enemy
         class Criminal {
             constructor(x, y) {
@@ -477,13 +1237,62 @@
                 this.shootCooldown = 300; // 5 seconds in frames (at 60fps)
                 this.isStunned = false;
                 this.stunDuration = 0;
+                this.hiddenPlayerTime = 0;
+                this.isClimbing = false;
+                this.climbTarget = null;
+                this.climbPhase = 'approach';
             }
 
-            update() {
+            update(timeScale) {
+                const playerRoof = getPlayerRoof();
+                const playerIsHidden = playerRoof && this.y > playerRoof.y;
+
+                if (!this.isClimbing && playerIsHidden &&
+                    getDistance(this.x, this.y, player.x, player.y) < 520) {
+                    this.hiddenPlayerTime += timeScale;
+                    if (this.hiddenPlayerTime >= 180) {
+                        this.isClimbing = true;
+                        this.climbTarget = playerRoof;
+                        this.climbPhase = 'approach';
+                    }
+                } else if (!playerIsHidden && !this.isClimbing) {
+                    this.hiddenPlayerTime = 0;
+                }
+
+                if (this.isClimbing && this.climbTarget) {
+                    const targetX = Math.max(
+                        this.climbTarget.x + this.width / 2,
+                        Math.min(player.x, this.climbTarget.x + this.climbTarget.width - this.width / 2)
+                    );
+
+                    if (this.climbPhase === 'approach') {
+                        const overlapsBuilding = this.x + this.width / 2 > this.climbTarget.x &&
+                            this.x - this.width / 2 < this.climbTarget.x + this.climbTarget.width;
+                        this.x += Math.sign(targetX - this.x) * 2.5 * timeScale;
+                        this.y = canvas.height - 50;
+
+                        if (overlapsBuilding) {
+                            this.climbPhase = 'climb';
+                        }
+                    } else {
+                        this.x += Math.sign(targetX - this.x) * 2.5 * timeScale;
+                        this.y -= 2.5 * timeScale;
+                    }
+
+                    if (this.y <= this.climbTarget.y - this.height) {
+                        this.y = this.climbTarget.y - this.height;
+                        this.vy = 0;
+                        this.isClimbing = false;
+                        this.climbTarget = null;
+                        this.climbPhase = 'approach';
+                    }
+                } else {
                 // Movement
-                this.x += this.vx;
-                this.vy += 0.5;
-                this.y += this.vy;
+                this.x += this.vx * timeScale;
+                this.vy += 0.5 * timeScale;
+                this.y += this.vy * timeScale;
+
+                resolveEnemyRoofCollisions(this);
 
                 // Ground collision
                 if (this.y > canvas.height - 50) {
@@ -491,21 +1300,22 @@
                     this.vy = 0;
                 }
 
-                // Wrap around screen
+                // Keep enemies inside the scrolling world.
                 if (this.x < -50) {
-                    this.x = canvas.width + 50;
-                } else if (this.x > canvas.width + 50) {
+                    this.x = worldWidth + 50;
+                } else if (this.x > worldWidth + 50) {
                     this.x = -50;
+                }
                 }
 
                 // Shoot cooldown
                 if (this.lastShotTime > 0) {
-                    this.lastShotTime--;
+                    this.lastShotTime -= timeScale;
                 }
 
                 // Stun
                 if (this.isStunned) {
-                    this.stunDuration--;
+                    this.stunDuration -= timeScale;
                     if (this.stunDuration <= 0) {
                         this.isStunned = false;
                     }
@@ -532,16 +1342,44 @@
             draw() {
                 if (this.isStunned) {
                     ctx.fillStyle = '#ffff00';
+                } else if (this.isClimbing) {
+                    ctx.fillStyle = '#ff9b32';
                 } else {
-                    ctx.fillStyle = '#ff0000';
+                    ctx.fillStyle = '#26354a';
                 }
 
-                // Body
-                ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
+                // Jacket and pants
+                ctx.fillRect(this.x - this.width / 2, this.y + 5, this.width, 18);
+                ctx.fillStyle = '#171b26';
+                ctx.fillRect(this.x - this.width / 2 + 2, this.y + 23, this.width - 4, 12);
+
+                // Jacket opening and shirt
+                ctx.fillStyle = '#b21f35';
+                ctx.fillRect(this.x - 3, this.y + 7, 6, 12);
+                ctx.strokeStyle = '#8f9caf';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y + 6);
+                ctx.lineTo(this.x, this.y + 21);
+                ctx.stroke();
+
+                // Belt and shoes
+                ctx.fillStyle = '#c59b38';
+                ctx.fillRect(this.x - 11, this.y + 21, 22, 3);
+                ctx.fillStyle = '#080a0f';
+                ctx.fillRect(this.x - 12, this.y + 32, 9, 5);
+                ctx.fillRect(this.x + 3, this.y + 32, 9, 5);
 
                 // Head
+                ctx.fillStyle = '#d89569';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y - 8, 10, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Hair
+                ctx.fillStyle = '#2a1b18';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y - 12, 9, Math.PI, Math.PI * 2);
                 ctx.fill();
 
                 // Eyes
@@ -583,10 +1421,10 @@
                 this.lifetime = 400;
             }
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.lifetime--;
+            update(timeScale) {
+                this.x += this.vx * timeScale;
+                this.y += this.vy * timeScale;
+                this.lifetime -= timeScale;
             }
 
             draw() {
@@ -622,28 +1460,103 @@
         const webProjectiles = [];
         const enemyBullets = [];
         const criminals = [];
+        const bananas = [];
+        const bananaRespawns = [];
         const keys = {};
+        let boss = null;
+        let train = null;
+        let trainStopProgress = 0;
+        let trainEventActive = false;
+        let docOckTrainComplete = false;
+        let bossTimer = 0;
+        let bossCooldown = 900;
 
         gameState.spiderSenseActive = false;
 
         player.x = 50;
         player.y = canvas.height - 50;
+        player.isGrounded = true;
 
         // Create buildings
-        for (let i = 0; i < 6; i++) {
+        const buildingHeights = [240, 340, 285, 390, 260, 320, 410, 275, 350, 230, 380, 300, 420, 255, 330];
+        const buildingWidths = [145, 180, 130, 200, 155, 175, 140, 190, 150, 210, 135, 185, 160, 200, 145];
+        for (let i = 0; i < buildingHeights.length; i++) {
+            const width = buildingWidths[i];
+            const height = buildingHeights[i];
             buildings.push(new Building(
-                i * 250 + 100,
-                canvas.height - 50 - 300,
-                150,
-                300
+                i * 235 + 100,
+                canvas.height - 50 - height,
+                width,
+                height
             ));
         }
 
+        // Place bananas on the ground and across the building roofs.
+        for (let x = 280; x < worldWidth; x += 260) {
+            bananas.push(new Banana(x, canvas.height - 52));
+        }
+        buildings.forEach((building) => {
+            bananas.push(new Banana(building.x + building.width / 2, building.y - 14));
+        });
+
         // Spawn initial criminals
         function spawnCriminal() {
-            const x = Math.random() > 0.5 ? -30 : canvas.width + 30;
+            const rooftopSpawn = Math.random() < 0.4;
+            if (rooftopSpawn) {
+                const nearbyBuildings = buildings.filter((building) => Math.abs(building.x - player.x) < 1000);
+                const availableBuildings = nearbyBuildings.length > 0 ? nearbyBuildings : buildings;
+                const building = availableBuildings[Math.floor(Math.random() * availableBuildings.length)];
+                const x = building.x + 20 + Math.random() * (building.width - 40);
+                const y = building.y - 35;
+                criminals.push(new Criminal(x, y));
+                return;
+            }
+
+            const direction = Math.random() > 0.5 ? 1 : -1;
+            const x = Math.max(30, Math.min(worldWidth - 30, player.x + direction * (600 + Math.random() * 300)));
             const y = canvas.height - 100;
             criminals.push(new Criminal(x, y));
+        }
+
+        function spawnBoss(requestedType) {
+            const bossTypes = ['Sandman', 'Green Goblin', 'Doc Ock'];
+            const type = requestedType || bossTypes[Math.floor(Math.random() * bossTypes.length)];
+            const x = Math.max(120, Math.min(worldWidth - 120, player.x + 520));
+            boss = new Boss(type, x, canvas.height - 130);
+            docOckTrainComplete = false;
+        }
+
+        function spawnRequestedVillain() {
+            const input = document.getElementById('villainInput');
+            const status = document.getElementById('commandStatus');
+            const villainName = input.value.trim().toLowerCase();
+            const villainAliases = {
+                'sandman': 'Sandman',
+                'green goblin': 'Green Goblin',
+                'goblin': 'Green Goblin',
+                'doc ock': 'Doc Ock',
+                'doctor octopus': 'Doc Ock',
+                'doc oc': 'Doc Ock'
+            };
+            const requestedType = villainAliases[villainName];
+
+            if (!requestedType) {
+                status.textContent = 'Use Sandman, Green Goblin, or Doc Ock.';
+                return;
+            }
+
+            boss = null;
+            train = null;
+            trainEventActive = false;
+            trainStopProgress = 0;
+            spawnBoss(requestedType);
+            bossTimer = 0;
+            status.textContent = `${requestedType} spawned.`;
+            input.value = '';
+            document.getElementById('commandPanel').classList.remove('show');
+            if (gameState.paused) {
+                togglePause();
+            }
         }
 
         for (let i = 0; i < 3; i++) {
@@ -652,9 +1565,42 @@
 
         let spawnTimer = 0;
 
+        function toggleCommandPanel() {
+            const commandPanel = document.getElementById('commandPanel');
+            const shouldOpen = !commandPanel.classList.contains('show');
+            commandPanel.classList.toggle('show', shouldOpen);
+            if (shouldOpen) {
+                if (!gameState.paused) {
+                    togglePause();
+                }
+                document.getElementById('villainInput').focus();
+            }
+        }
+
         // Input handling
         document.addEventListener('keydown', (e) => {
             keys[e.key] = true;
+
+            if (e.key.toLowerCase() === 't' && e.target.tagName !== 'INPUT' && gameState.started && !gameState.gameOver && !e.repeat) {
+                toggleCommandPanel();
+                return;
+            }
+
+            if (e.key.toLowerCase() === 'p' && gameState.started && !gameState.gameOver && !e.repeat) {
+                togglePause();
+                return;
+            }
+
+            if (gameState.paused) {
+                return;
+            }
+
+            if (e.key.toLowerCase() === 'w') {
+                e.preventDefault();
+                if (!e.repeat) {
+                    player.jump();
+                }
+            }
 
             if (e.key.toLowerCase() === 'e') {
                 gameState.spiderSenseActive = true;
@@ -663,7 +1609,7 @@
             // Shoot web with space
             if (e.key === ' ') {
                 e.preventDefault();
-                const mouseX = canvas.width / 2;
+                const mouseX = cameraX + canvas.width / 2;
                 const mouseY = canvas.height / 2;
                 const web = player.shoot(mouseX, mouseY);
                 if (web) {
@@ -683,14 +1629,14 @@
         function getCanvasPosition(e) {
             const rect = canvas.getBoundingClientRect();
             return {
-                x: (e.clientX - rect.left) * canvas.width / rect.width,
+                x: cameraX + (e.clientX - rect.left) * canvas.width / rect.width,
                 y: (e.clientY - rect.top) * canvas.height / rect.height
             };
         }
 
         // Hold left click on a building to attach, steer, and swing.
         canvas.addEventListener('mousedown', (e) => {
-            if (e.button !== 0) {
+            if (e.button !== 0 || gameState.paused) {
                 return;
             }
 
@@ -700,7 +1646,7 @@
             let hitBuilding = false;
             for (let building of buildings) {
                 if (building.contains(position.x, position.y)) {
-                    player.startSwing(position.x, position.y);
+                    player.startSwing(position.x, position.y, building);
                     hitBuilding = true;
                     break;
                 }
@@ -716,19 +1662,19 @@
         });
 
         canvas.addEventListener('mousemove', (e) => {
-            if (!player.isSwinging) {
+            if (gameState.paused || !player.isSwinging) {
                 return;
             }
 
             const position = getCanvasPosition(e);
-            const onBuilding = buildings.some((building) => building.contains(position.x, position.y));
-            if (!onBuilding) {
+            const building = player.swingBuilding;
+            if (!building || !building.contains(position.x, position.y)) {
                 player.endSwing();
                 return;
             }
 
-            player.swingAnchorX = position.x;
-            player.swingAnchorY = position.y;
+            player.swingAnchorX = Math.max(building.x + 4, Math.min(position.x, building.x + building.width - 4));
+            player.swingAnchorY = Math.max(building.y + 4, Math.min(position.y, building.y + building.height - 4));
         });
 
         canvas.addEventListener('mouseup', (e) => {
@@ -772,6 +1718,58 @@
                     playerObject.y = building.y - playerObject.height;
                     playerObject.vy = 0;
                     playerObject.isGrounded = true;
+                }
+            }
+        }
+
+        function resolveEnemyRoofCollisions(enemy) {
+            for (const building of buildings) {
+                const overlapsRoof = enemy.x + enemy.width / 2 > building.x &&
+                    enemy.x - enemy.width / 2 < building.x + building.width;
+                const isAtRoof = enemy.y < building.y + 5 &&
+                    enemy.y + enemy.height >= building.y;
+
+                if (overlapsRoof && isAtRoof && enemy.vy >= 0) {
+                    enemy.y = building.y - enemy.height;
+                    enemy.vy = 0;
+                }
+            }
+        }
+
+        function isPlayerCoveredByRoof() {
+            const playerBounds = player.getBounds();
+
+            return buildings.some((building) => {
+                const playerOnRoof = playerBounds.y + playerBounds.height <= building.y + 2;
+                const playerOverRoof = playerBounds.x + playerBounds.width > building.x &&
+                    playerBounds.x < building.x + building.width;
+                return playerOnRoof && playerOverRoof;
+            });
+        }
+
+        function getPlayerRoof() {
+            const playerBounds = player.getBounds();
+
+            return buildings.find((building) => {
+                const playerOnRoof = Math.abs(playerBounds.y + playerBounds.height - building.y) < 3;
+                const playerOverRoof = playerBounds.x + playerBounds.width > building.x &&
+                    playerBounds.x < building.x + building.width;
+                return playerOnRoof && playerOverRoof;
+            });
+        }
+
+        function isPlayerBehindRoof(enemy) {
+            return isPlayerCoveredByRoof() && enemy.y > player.y;
+        }
+
+        function updateBananaRespawns() {
+            const now = performance.now();
+
+            for (let i = bananaRespawns.length - 1; i >= 0; i--) {
+                if (bananaRespawns[i].respawnAt <= now) {
+                    const respawn = bananaRespawns[i];
+                    bananas.push(new Banana(respawn.x, respawn.y));
+                    bananaRespawns.splice(i, 1);
                 }
             }
         }
@@ -820,6 +1818,14 @@
                     ctx.stroke();
                 }
             }
+
+            for (const banana of bananas) {
+                if (getDistance(player.x, player.y, banana.x, banana.y) < senseRadius) {
+                    ctx.strokeStyle = `rgba(255, 220, 0, ${pulse})`;
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(banana.x - 16, banana.y - 20, 32, 40);
+                }
+            }
         }
 
         // Update UI
@@ -827,37 +1833,147 @@
             document.getElementById('healthBar').style.width = (gameState.health / gameState.maxHealth) * 100 + '%';
             document.getElementById('webEnergy').textContent = Math.ceil(gameState.webEnergy);
             document.getElementById('criminalsCaught').textContent = gameState.criminalsCaught;
+            document.getElementById('bananasCollected').textContent = gameState.bananasCollected;
+            document.getElementById('playerNameDisplay').textContent = player.name;
             document.getElementById('score').textContent = gameState.score;
+            const bossDisplay = document.getElementById('bossDisplay');
+            if (boss) {
+                bossDisplay.classList.add('active');
+                document.getElementById('bossName').textContent = boss.type;
+                document.getElementById('bossHealthBar').style.width = `${Math.max(0, boss.health / boss.maxHealth) * 100}%`;
+            } else {
+                bossDisplay.classList.remove('active');
+            }
         }
+
+        document.querySelectorAll('.color-swatch').forEach((swatch) => {
+            swatch.addEventListener('click', () => {
+                const colorType = swatch.dataset.colorType;
+                player[colorType === 'suit' ? 'suitColor' : 'accentColor'] = swatch.dataset.color;
+                swatch.parentElement.querySelectorAll('.color-swatch').forEach((item) => {
+                    item.classList.toggle('selected', item === swatch);
+                });
+            });
+        });
+
+        document.getElementById('startGameButton').addEventListener('click', () => {
+            const requestedName = document.getElementById('playerNameInput').value.trim();
+            player.name = requestedName || 'Spider-Man';
+            gameState.started = true;
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('quitButton').style.display = 'block';
+            document.getElementById('pauseButton').style.display = 'block';
+            document.getElementById('musicButton').style.display = 'block';
+            document.getElementById('commandButton').style.display = 'block';
+            gameMusic.start();
+            updateUI();
+        });
+
+        document.getElementById('musicButton').addEventListener('click', () => {
+            const musicEnabled = gameMusic.toggle();
+            document.getElementById('musicButton').textContent = musicEnabled ? 'Music: On' : 'Music: Off';
+        });
+
+        function togglePause() {
+            gameState.paused = !gameState.paused;
+            document.getElementById('pauseButton').textContent = gameState.paused ? 'Resume' : 'Pause';
+            document.getElementById('pauseOverlay').classList.toggle('show', gameState.paused);
+
+            if (gameState.paused) {
+                gameMusic.stop();
+            } else {
+                gameMusic.start();
+            }
+        }
+
+        document.getElementById('pauseButton').addEventListener('click', togglePause);
+        document.getElementById('commandButton').addEventListener('click', toggleCommandPanel);
+
+        document.getElementById('spawnVillainButton').addEventListener('click', spawnRequestedVillain);
+        document.getElementById('villainInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                spawnRequestedVillain();
+            }
+        });
+
+        document.getElementById('quitButton').addEventListener('click', () => {
+            player.endSwing();
+            gameMusic.stop();
+            gameState.gameOver = true;
+            document.getElementById('gameOverText').textContent = 'GAME QUIT';
+        });
 
         // Game loop
         function gameLoop() {
+            if (!gameState.started) {
+                requestAnimationFrame(gameLoop);
+                return;
+            }
+
             if (gameState.gameOver) {
                 document.getElementById('gameOver').classList.add('show');
                 document.getElementById('finalScore').textContent = gameState.score;
                 return;
             }
 
+            if (gameState.paused) {
+                requestAnimationFrame(gameLoop);
+                return;
+            }
+
+            player.update(keys);
+            cameraX = Math.max(0, Math.min(worldWidth - canvas.width, player.x - canvas.width * 0.35));
+
             // Clear canvas
             ctx.fillStyle = 'rgba(135, 206, 235, 1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            ctx.save();
+            ctx.translate(-cameraX, 0);
+
             // Draw ground
             ctx.fillStyle = '#228B22';
-            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+            ctx.fillRect(cameraX, canvas.height - 50, canvas.width, 50);
 
             // Draw buildings
             for (let building of buildings) {
                 building.draw();
             }
 
-            // Update and draw player
-            player.update(keys);
+            // Draw player
             player.draw();
 
+            updateBananaRespawns();
+
+            // Collect bananas and heal the player.
+            for (let i = bananas.length - 1; i >= 0; i--) {
+                const banana = bananas[i];
+                banana.draw();
+
+                if (getDistance(player.x, player.y, banana.x, banana.y) < 36) {
+                    gameState.health = Math.min(gameState.health + 25, gameState.maxHealth);
+                    gameState.bananasCollected++;
+                    gameState.score += 10;
+                    bananaRespawns.push({
+                        x: banana.x,
+                        y: banana.y,
+                        respawnAt: performance.now() + 30000
+                    });
+                    bananas.splice(i, 1);
+                }
+            }
+
             // Spawn criminals periodically
-            spawnTimer++;
-            if (spawnTimer > 180 + (gameState.level * 30)) { // Spawn every 3 seconds, faster with level
+            const timeScale = gameState.spiderSenseActive ? 0.25 : 1;
+            spawnTimer += timeScale;
+            bossTimer += timeScale;
+            if (!boss && bossTimer >= bossCooldown) {
+                spawnBoss();
+                bossTimer = 0;
+                bossCooldown = 900 + Math.random() * 600;
+            }
+            if (!boss && spawnTimer > 120 + (gameState.level * 15)) { // Spawn every 2 seconds, faster with level
                 spawnCriminal();
                 spawnTimer = 0;
             }
@@ -865,17 +1981,17 @@
             // Update and draw criminals
             for (let i = 0; i < criminals.length; i++) {
                 let criminal = criminals[i];
-                criminal.update();
+                criminal.update(timeScale);
                 criminal.draw();
 
                 // Criminals shoot at player
-                if (criminal.shoot()) {
+                if (criminal.shoot() && !isPlayerBehindRoof(criminal)) {
                     const bullet = new EnemyBullet(criminal.x, criminal.y, player.x, player.y);
                     enemyBullets.push(bullet);
                 }
 
                 // Check if criminal went off screen
-                if (criminal.health <= 0 || criminal.x < -100 || criminal.x > canvas.width + 100) {
+                if (criminal.health <= 0 || criminal.x < -100 || criminal.x > worldWidth + 100) {
                     criminals.splice(i, 1);
                     if (criminal.health <= 0) {
                         gameState.criminalsCaught++;
@@ -885,12 +2001,56 @@
                 }
             }
 
+            if (boss) {
+                if (!trainEventActive) {
+                    boss.update(timeScale);
+                }
+                boss.draw();
+            }
+
+            if (trainEventActive && train) {
+                train.update(timeScale);
+                player.endSwing();
+                player.x = train.getFrontX();
+                player.y = train.y - 45;
+                player.vx = 0;
+                player.vy = 0;
+                if (keys[' ']) {
+                    train.drawWebs(player.x, player.y + 8);
+                    trainStopProgress = Math.min(100, trainStopProgress + 0.7 * timeScale);
+                }
+                train.draw();
+                player.draw();
+
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.fillRect(cameraX + canvas.width / 2 - 210, 18, 420, 72);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 18px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('STOP THE TRAIN - HOLD SPACE', cameraX + canvas.width / 2, 43);
+                ctx.fillStyle = '#333';
+                ctx.fillRect(cameraX + canvas.width / 2 - 180, 57, 360, 14);
+                ctx.fillStyle = '#e32636';
+                ctx.fillRect(cameraX + canvas.width / 2 - 180, 57, trainStopProgress * 3.6, 14);
+                ctx.textAlign = 'left';
+
+                if (trainStopProgress >= 100) {
+                    train.stopped = true;
+                    trainEventActive = false;
+                    docOckTrainComplete = true;
+                    train = null;
+                    if (boss) {
+                        boss.health = 1;
+                    }
+                }
+            }
+
             drawSpiderSense();
 
             // Update and draw web projectiles
             for (let i = 0; i < webProjectiles.length; i++) {
                 let web = webProjectiles[i];
-                web.update();
+                web.update(timeScale);
                 web.draw();
 
                 // Check collision with criminals
@@ -908,6 +2068,24 @@
                     }
                 }
 
+                if (!webProjectiles.includes(web)) {
+                    continue;
+                }
+
+                if (boss && getDistance(web.x, web.y, boss.x, boss.y) < 55) {
+                    if (boss.type === 'Doc Ock' && !docOckTrainComplete && !trainEventActive && boss.health <= 70) {
+                        trainEventActive = true;
+                        trainStopProgress = 0;
+                        train = new Train(player.x + canvas.width * 0.95, canvas.height - 170);
+                        boss.health = 70;
+                    } else if (!trainEventActive) {
+                        boss.takeDamage(35);
+                    }
+                    gameState.score += 50;
+                    webProjectiles.splice(i, 1);
+                    i--;
+                }
+
                 // Remove if expired
                 if (!web.isAlive()) {
                     webProjectiles.splice(i, 1);
@@ -915,22 +2093,31 @@
                 }
             }
 
+            if (boss && boss.health <= 0) {
+                gameState.score += 500;
+                boss = null;
+                bossTimer = 0;
+                bossCooldown = 900 + Math.random() * 600;
+            }
+
             // Update and draw enemy bullets
             for (let i = 0; i < enemyBullets.length; i++) {
                 let bullet = enemyBullets[i];
-                bullet.update();
+                bullet.update(timeScale);
                 bullet.draw();
 
                 // Check collision with player
                 const distance = getDistance(bullet.x, bullet.y, player.x, player.y);
-                if (distance < 20) {
+                if (distance < 20 && !isPlayerCoveredByRoof()) {
                     gameState.health -= 10;
                     enemyBullets.splice(i, 1);
-                    i--;
 
                     if (gameState.health <= 0) {
                         gameState.gameOver = true;
                     }
+
+                    i--;
+                    continue;
                 }
 
                 // Remove if expired
@@ -938,12 +2125,6 @@
                     enemyBullets.splice(i, 1);
                     i--;
                 }
-            }
-
-            // Check if player fell off bottom
-            if (player.y > canvas.height + 100) {
-                gameState.gameOver = true;
-                gameState.health = 0;
             }
 
             // Level progression
@@ -954,16 +2135,14 @@
             // Update UI
             updateUI();
 
+            ctx.restore();
+
             // Continue game loop
             requestAnimationFrame(gameLoop);
         }
 
         // Start game
         gameLoop();
-    </script>
-</body>
-</html>
-
     </script>
 </body>
 </html>
