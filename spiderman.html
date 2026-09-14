@@ -1522,6 +1522,12 @@
             const bossTypes = ['Sandman', 'Green Goblin', 'Doc Ock'];
             const type = requestedType || bossTypes[Math.floor(Math.random() * bossTypes.length)];
             const x = Math.max(120, Math.min(worldWidth - 120, player.x + 520));
+            trainEventActive = false;
+            train = null;
+            player.vx = 0;
+            keys['ArrowRight'] = false;
+            keys['d'] = false;
+            keys['D'] = false;
             boss = new Boss(type, x, canvas.height - 130);
             docOckTrainComplete = false;
         }
