@@ -1525,8 +1525,11 @@
             trainEventActive = false;
             train = null;
             player.vx = 0;
+            keys['ArrowLeft'] = false;
             keys['ArrowRight'] = false;
+            keys['a'] = false;
             keys['d'] = false;
+            keys['A'] = false;
             keys['D'] = false;
             boss = new Boss(type, x, canvas.height - 130);
             docOckTrainComplete = false;
@@ -1585,9 +1588,13 @@
 
         // Input handling
         document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
             keys[e.key] = true;
 
-            if (e.key.toLowerCase() === 't' && e.target.tagName !== 'INPUT' && gameState.started && !gameState.gameOver && !e.repeat) {
+            if (e.key.toLowerCase() === 't' && gameState.started && !gameState.gameOver && !e.repeat) {
                 toggleCommandPanel();
                 return;
             }
